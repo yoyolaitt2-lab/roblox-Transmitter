@@ -5,9 +5,9 @@ const PORT = process.env.PORT || 3000;
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// --- FUNZIONE DI CONVERSIONE (Inseriscila qui nel file principale) ---
-function parolaIn6Bit(parola) {
-    let testo = parola.toLowerCase();
+// Funzione interna per convertire frasi intere in binario a 6 bit
+function fraseIn6Bit(frase) {
+    let testo = frase.toLowerCase();
     let risultatoBinario = [];
 
     for (let i = 0; i < testo.length; i++) {
@@ -15,40 +15,38 @@ function parolaIn6Bit(parola) {
         let valoreLogico = 0;
 
         if (char >= 'a' && char <= 'z') {
-            valoreLogico = char.charCodeAt(0) - 'a'.charCodeAt(0) + 1;
+            valoreLogico = char.charCodeAt(0) - 'a'.charCodeAt(0) + 1; // a=1, b=2...
         } else if (char >= '1' && char <= '9') {
-            valoreLogico = char.charCodeAt(0) - '1'.charCodeAt(0) + 27;
+            valoreLogico = char.charCodeAt(0) - '1'.charCodeAt(0) + 27; // 1=27...
         } else if (char === '0') {
             valoreLogico = 36;
         } else if (char === ' ') {
-            valoreLogico = 37;
+            valoreLogico = 37; // Valore logico per lo spazio tra le parole
         }
 
-        // Converte e forza la lunghezza a 6 bit
         let binario6Bit = valoreLogico.toString(2).padStart(6, '0');
         risultatoBinario.push(binario6Bit);
     }
 
-    // Unisce i bit senza spazi per mandarli come blocco unico al gioco (es: "011001000001")
-    // Se preferisci mantenerli separati, usa .join(' ')
+    // Unisce tutte le lettere e gli spazi in una stringa continua
     return risultatoBinario.join(''); 
 }
 
-// Endpoint POST: Quando invii dati dal gioco al sito
+// Endpoint POST: Quando invii dati dal gioco al sito (Ripristinato con '/')
 app.post('/invia-a-sito', (req, res) => {
     console.log("Dati ricevuti da Roblox:", req.body);
     res.json({ value: "00000000" });
 });
 
-// Endpoint GET: Quando il gioco richiede dati dal sito
+// Endpoint GET: Quando il gioco richiede dati dal sito (Ripristinato con '/')
 app.get('/ricevi-da-sito', (req, res) => {
-    // 1. Definisci la parola che vuoi inviare a Roblox
-    const parolaDaInviare = "a"; 
+    // PUOI SCRIVERE PIÙ PAROLE SEPARATE DA SPAZI QUI DENTRO:
+    const mieParole = "ciao roblox"; 
     
-    // 2. Trasformala nella sequenza binaria a 6 bit
-    const stringaBinaria = parolaIn6Bit(parolaDaInviare); // Genererà "011001"
+    // Converte l'intera frase in un'unica stringa binaria
+    const stringaBinaria = fraseIn6Bit(mieParole); 
 
-    // 3. Rispondi dinamicamente inserendo la variabile generata
+    // Invia il JSON corretto a Roblox
     res.json({ value: stringaBinaria });
 });
 
