@@ -16,7 +16,7 @@ app.post('/invia-a-sito', (req, res) => {
 // Endpoint GET: Quando il gioco richiede dati dal sito
 app.get('/ricevi-da-sito', (req, res) => {
     // Cambia gli zeri e gli uni per attivare le porte logiche nel gioco (es: "00000101")
-    res.json({ value: "00000001" });
+    res.json({ value: "10011001" });
 });
 
 app.listen(PORT, () => console.log(`Server attivo sulla porta ${PORT}`));
