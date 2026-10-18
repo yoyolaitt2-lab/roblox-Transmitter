@@ -43,7 +43,7 @@ app.post('/invia-a-sito', (req, res) => {
 // Endpoint GET: Quando il gioco richiede dati dal sito
 app.get('/ricevi-da-sito', (req, res) => {
     // 1. Definisci la parola che vuoi inviare a Roblox
-    const parolaDaInviare = "y"; 
+    const parolaDaInviare = "a"; 
     
     // 2. Trasformala nella sequenza binaria a 6 bit
     const stringaBinaria = parolaIn6Bit(parolaDaInviare); // Genererà "011001"
